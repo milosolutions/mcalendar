@@ -109,7 +109,9 @@ class MCalendar : public QWidget
     void setMonth(const QDate &month);
     const QVector<MDayView *> &dayViews() const;
 
- protected:
+    void setBackgroundColor(const QColor& color);
+
+protected:
     virtual void onRowAdded(const MRowView *row);
     QVector<MDayView *> m_days;
     Range m_range;

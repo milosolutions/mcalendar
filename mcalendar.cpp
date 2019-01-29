@@ -157,13 +157,18 @@ MRowView* MWeekRowFactory::build() const
  * \brief calendar widget with fully customizable delegate for day and calendar row
  */
 
-MCalendar::MCalendar(QWidget* parent) : QWidget(parent)
+void MCalendar::setBackgroundColor(const QColor& color)
 {
     // https://wiki.qt.io/How_to_Change_the_Background_Color_of_QWidget
     QPalette pal = palette();
-    pal.setColor(QPalette::Background, QColor("#F7F7F7")); //, Ui::color(Ui::AlmostWhite));
+    pal.setColor(QPalette::Background, color);
     setAutoFillBackground(true);
     setPalette(pal);
+}
+
+MCalendar::MCalendar(QWidget* parent) : QWidget(parent)
+{
+    setBackgroundColor(QColor("#F7F7F7"));
 
     m_mainLayout = new QVBoxLayout(this);
     m_mainLayout->setAlignment(Qt::AlignTop);
