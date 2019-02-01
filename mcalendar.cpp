@@ -3,7 +3,6 @@
 #include <QDate>
 #include <QLabel>
 #include <QStyleOption>
-//#include "mtui.h"
 
 /*!
  * \class MDayView
@@ -215,10 +214,10 @@ void MCalendar::setRowFactory(MRowFactory* factory)
     m_rowFactory = factory;
 }
 
-void MCalendar::setDateRange(Range range)
+void MCalendar::setDateRange(const MDateRange &range)
 {
     if (!range.isValid()) return;
-    if (range.isSame(m_range)) return;
+    if (range == m_range) return;
 
     m_range = range;
     updateRows();
@@ -226,9 +225,9 @@ void MCalendar::setDateRange(Range range)
 
 void MCalendar::setMonth(const QDate& month)
 {
-    Range range;
-    range.start = QDate(month.year(), month.month(), 1);
-    range.end = QDate(month.year(), month.month(), month.daysInMonth());
+    MDateRange range;
+    range.from = QDate(month.year(), month.month(), 1);
+    range.to = QDate(month.year(), month.month(), month.daysInMonth());
     setDateRange(range);
 }
 
@@ -274,7 +273,7 @@ void MCalendar::updateRows()
     // compute number of rows
     int daysPerRow = m_rowFactory->daysInRow();
     int daysCount = m_range.daysCount();
-    daysCount += m_range.start.dayOfWeek() - 1;
+    daysCount += m_range.from.dayOfWeek() - 1;
     int rowsCount = daysCount / daysPerRow;
     if (daysCount - rowsCount * daysPerRow > 0) rowsCount++;
 
@@ -285,14 +284,14 @@ void MCalendar::updateRows()
     if (diff > 0) addViews(diff);                  // add missing views
 
     // set dates rows
-    auto start = m_range.start;
+    auto start = m_range.from;
     auto end = nextMonday(start).addDays(-1);
     Q_ASSERT(m_rows.count() == rowsCount && rowsCount > 0);
     m_rows.at(0)->setFirstDate(start, end);
     for (int i = 1; i < m_rows.count(); ++i) {
         auto rowView = m_rows.at(i);
         start = nextMonday(start);
-        auto end = qMin(start.addDays(daysPerRow - 1), m_range.end);
+        auto end = qMin(start.addDays(daysPerRow - 1), m_range.to);
         rowView->setFirstDate(start, end);
     }
 }

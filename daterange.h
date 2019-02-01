@@ -1,20 +1,35 @@
-#ifndef DATERANGE_H
-#define DATERANGE_H
+#ifndef MDATERANGE_H
+#define MDATERANGE_H
 
 #include <QDate>
 
-/*! \class DateRange
+/*! \class MDateRange
  *  \brief A class that represents the date range
  */
-class Range
+class MDateRange
 {
  public:
-    QDate start;
-    QDate end;
-    bool isValid() const { return start.isValid() && end.isValid() && start <= end; }
-    bool isSame(const Range &other) const { return start == other.start && end == other.end; }
-    qint64 duration() const { return start.daysTo(end); }
-    qint64 daysCount() const { return duration() + 1; }
+    QDate from;
+    QDate to;
+
+    bool isValid() const { 
+        return this->from.isValid() && 
+               this->to.isValid() && 
+               this->from <= this->to; 
+    }
+    qint64 duration() const { 
+        return this->from.daysTo(to); 
+    }
+    qint64 daysCount() const {
+         return this->duration() + 1; 
+    }
+    
+    bool equals(const MDateRange &other) const { 
+        return this->from == other.from && this->to == other.to; 
+    }
+    bool operator==(const MDateRange &other) const {
+        return this->equals(other);
+    }
 };
 
-#endif  // DATERANGE_H
+#endif  // MDATERANGE_H

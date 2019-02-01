@@ -105,7 +105,7 @@ class MCalendar : public QWidget
     const QWidget *header() const;
     void setDayFactory(MDayFactory *factory);
     void setRowFactory(MRowFactory *factory);
-    void setDateRange(Range range);
+    void setDateRange(const MDateRange &range);
     void setMonth(const QDate &month);
     const QVector<MDayView *> &dayViews() const;
 
@@ -114,7 +114,7 @@ class MCalendar : public QWidget
 protected:
     virtual void onRowAdded(const MRowView *row);
     QVector<MDayView *> m_days;
-    Range m_range;
+    MDateRange m_range;
 
  private:
     void updateRows();
