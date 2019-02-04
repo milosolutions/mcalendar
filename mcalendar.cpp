@@ -151,6 +151,29 @@ MRowView* MWeekRowFactory::build() const
     return new MWeekRow();
 }
 
+
+MSimpleHeader::MSimpleHeader(QWidget *parent) : QWidget(parent)
+{
+    auto mainLayout = new QHBoxLayout(this);
+    mainLayout->setAlignment(Qt::AlignLeft);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setSpacing(3);
+    for (int i = 1; i <= 7; ++i)
+        mainLayout->addWidget(
+            prepareLabel(QLocale(QLocale::English).dayName(i, QLocale::ShortFormat)));
+    setAutoFillBackground(true);
+}
+
+QLabel *MSimpleHeader::prepareLabel(const QString &text)
+{
+    auto label = new QLabel(text);
+    label->setContentsMargins(0, 0, 0, 10);
+    label->setFixedWidth(50);
+    label->setAlignment(Qt::AlignCenter);
+    return label;
+}
+
+
 /*!
  * \class MCalendar
  * \brief calendar widget with fully customizable delegate for day and calendar row

@@ -49,6 +49,15 @@ class MSimpleDayFactory : public MDayFactory
     MDayView *build() const override;
 };
 
+class MSimpleHeader: public QWidget
+{
+public:
+    MSimpleHeader(QWidget *parent);
+
+private:
+    QLabel *prepareLabel(const QString &text);
+};
+
 class MRowView : public QWidget
 {
  public:
