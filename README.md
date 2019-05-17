@@ -1,6 +1,7 @@
-[TOC]
+MCalendar
+===
 
-Milo Code DB main ([online](https://docs.milosolutions.com/milo-code-db/main/) | [offline](\ref milodatabasemain))
+[Online documentation](https://docs.milosolutions.com/milo-code-db/mcalendar)
 
 [Source code](https://git.milosolutions.com/milo-code-database/mcalendar.git)
 
