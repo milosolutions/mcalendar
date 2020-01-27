@@ -4,6 +4,8 @@
 #include <QWidget>
 #include "daterange.h"
 #include "timerange.h"
+#include <type_traits>
+#include <utility>
 
 class QLabel;
 class QVBoxLayout;
@@ -27,6 +29,33 @@ class MDayView : public QWidget
     QDate m_date;
 };
 
+class MDayFactory
+{
+ public:
+    virtual MDayView *build() const = 0;
+};
+
+template <class T, class FactoryT>
+class MGenericFactory : public FactoryT
+{
+    using ReturnTPtr = decltype(std::declval<FactoryT>().build());
+    using ReturnT = typename std::remove_pointer<ReturnTPtr>::type;
+    static_assert (std::is_base_of<ReturnT, T>::value, "NOT SAME");
+    virtual ReturnTPtr build() const override {
+        return new T();
+    }
+
+};
+
+template <class DayT>
+class MGenericDayFactory : public MDayFactory
+{
+public:
+    virtual MDayView * build() const override {
+        return new DayT();
+    }
+};
+
 class MSimpleDay : public MDayView
 {
  public:
@@ -37,17 +66,9 @@ class MSimpleDay : public MDayView
     QLabel *m_label;
 };
 
-class MDayFactory
-{
- public:
-    virtual MDayView *build() const = 0;
-};
+using MSimpleDayFactory = MGenericFactory<MSimpleDay, MDayFactory>;
 
-class MSimpleDayFactory : public MDayFactory
-{
- public:
-    MDayView *build() const override;
-};
+
 
 class MSimpleHeader: public QWidget
 {
@@ -99,11 +120,7 @@ class MRowFactory
     int daysInRow() const;
 };
 
-class MWeekRowFactory : public MRowFactory
-{
- public:
-    MRowView *build() const override;
-};
+using MWeekRowFactory = MGenericFactory<MWeekRow, MRowFactory>;
 
 class MCalendar : public QWidget
 {

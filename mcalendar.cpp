@@ -26,6 +26,7 @@ MSimpleDay::MSimpleDay() : MDayView()
 {
     auto layout = new QVBoxLayout(this);
     m_label = new QLabel;
+    m_label->setFixedWidth(50);
     layout->addWidget(m_label);
 }
 
@@ -34,10 +35,6 @@ void MSimpleDay::onDateChanged()
     m_label->setText(date().toString("d"));
 }
 
-MDayView* MSimpleDayFactory::build() const
-{
-    return new MSimpleDay();
-}
 
 /*!
  * \class MRowView
@@ -146,10 +143,6 @@ int MRowFactory::daysInRow() const
     return count;
 }
 
-MRowView* MWeekRowFactory::build() const
-{
-    return new MWeekRow();
-}
 
 
 MSimpleHeader::MSimpleHeader(QWidget *parent) : QWidget(parent)
