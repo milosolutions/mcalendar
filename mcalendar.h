@@ -40,7 +40,9 @@ class MGenericFactory : public FactoryT
 {
     using ReturnTPtr = decltype(std::declval<FactoryT>().build());
     using ReturnT = typename std::remove_pointer<ReturnTPtr>::type;
-    static_assert (std::is_base_of<ReturnT, T>::value, "NOT SAME");
+
+    static_assert (std::is_base_of<ReturnT, T>::value,
+        "Provided T Type does not inherit type returned by Factory build method");
     virtual ReturnTPtr build() const override {
         return new T();
     }
