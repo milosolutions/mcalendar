@@ -30,6 +30,7 @@ SOFTWARE.
 #include <QLabel>
 #include <QString>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include "mcalendar.h"
 #include "sampleday.h"
 
@@ -39,31 +40,44 @@ Q_LOGGING_CATEGORY(coreMain, "core.main")
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
-    a.setApplicationName("Example MCalendar app");
     a.setOrganizationName("Milo");
+    a.setApplicationName("MCalendar");
 
     qCDebug(coreMain) << "Application name is:" << a.applicationName();
 
     QWidget w;
-    QHBoxLayout* layout = new QHBoxLayout ();
+    QVBoxLayout* layout = new QVBoxLayout ();
 
     auto date = QDate::currentDate();
+    w.setWindowTitle(date.toString("MMM yyy"));
     MCalendar calendar;
     calendar.setHeader(new MSimpleHeader(&calendar));
     calendar.setDayFactory(new SampleDay::Factory());
     calendar.setRowFactory(new MWeekRowFactory());
     calendar.setMonth(date);
 
-    QPushButton b("Next Month");
-    b.connect(&b, &QPushButton::clicked,
+    QHBoxLayout* buttonsLayout = new QHBoxLayout();
+    QPushButton prev("Prev Month");
+    QObject::connect(&prev, &QPushButton::clicked,
+        [&]() {
+            date = date.addMonths(-1);
+            calendar.setMonth(date);
+            w.setWindowTitle(date.toString("MMM yyy"));
+        });
+    buttonsLayout->addWidget(&prev);
+
+    QPushButton next("Next Month");
+    QObject::connect(&next, &QPushButton::clicked,
         [&]() {
             date = date.addMonths(1);
             calendar.setMonth(date);
+            w.setWindowTitle(date.toString("MMM yyy"));
         });
-        
+    buttonsLayout->addWidget(&next);
+
+    layout->addLayout(buttonsLayout);
     layout->addWidget(&calendar);
-    layout->addWidget(&b);
+
     w.setLayout(layout);
     w.show();
     return a.exec();
