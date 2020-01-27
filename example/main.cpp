@@ -31,31 +31,10 @@ SOFTWARE.
 #include <QString>
 #include <QPushButton>
 #include "mcalendar.h"
+#include "sampleday.h"
 
 Q_LOGGING_CATEGORY(coreMain, "core.main")
 
-class SampleDay : public MSimpleDay
-{
-public:
-    SampleDay()
-    {
-        auto layout = new QVBoxLayout(this);
-        m_label = new QLabel;
-        m_label->setFixedWidth(50);
-        layout->addWidget(m_label);
-    }
-
-
-protected:
-    virtual void onDateChanged() override
-    {
-        qCDebug(coreMain) << "Date has changed!" << date();
-    }
-
-    QLabel* m_label;
-};
-
-using SampleDayFactory = MGenericFactory<SampleDay, MDayFactory>;
 
 int main(int argc, char *argv[])
 {
@@ -72,7 +51,7 @@ int main(int argc, char *argv[])
     auto date = QDate::currentDate();
     MCalendar calendar;
     calendar.setHeader(new MSimpleHeader(&calendar));
-    calendar.setDayFactory(new SampleDayFactory());
+    calendar.setDayFactory(new SampleDay::Factory());
     calendar.setRowFactory(new MWeekRowFactory());
     calendar.setMonth(date);
 
