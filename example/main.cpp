@@ -29,9 +29,33 @@ SOFTWARE.
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QString>
+#include <QPushButton>
 #include "mcalendar.h"
 
 Q_LOGGING_CATEGORY(coreMain, "core.main")
+
+class SampleDay : public MSimpleDay
+{
+public:
+    SampleDay()
+    {
+        auto layout = new QVBoxLayout(this);
+        m_label = new QLabel;
+        m_label->setFixedWidth(50);
+        layout->addWidget(m_label);
+    }
+
+
+protected:
+    virtual void onDateChanged() override
+    {
+        qCDebug(coreMain) << "Date has changed!" << date();
+    }
+
+    QLabel* m_label;
+};
+
+using SampleDayFactory = MGenericFactory<SampleDay, MDayFactory>;
 
 int main(int argc, char *argv[])
 {
@@ -42,13 +66,26 @@ int main(int argc, char *argv[])
 
     qCDebug(coreMain) << "Application name is:" << a.applicationName();
 
+    QWidget w;
+    QHBoxLayout* layout = new QHBoxLayout ();
+
+    auto date = QDate::currentDate();
     MCalendar calendar;
     calendar.setHeader(new MSimpleHeader(&calendar));
-    calendar.setDayFactory(new MSimpleDayFactory());
+    calendar.setDayFactory(new SampleDayFactory());
     calendar.setRowFactory(new MWeekRowFactory());
-    calendar.setMonth(QDate::currentDate());
+    calendar.setMonth(date);
 
-
-    calendar.show();
+    QPushButton b("Next Month");
+    b.connect(&b, &QPushButton::clicked,
+        [&]() {
+            date = date.addMonths(1);
+            calendar.setMonth(date);
+        });
+        
+    layout->addWidget(&calendar);
+    layout->addWidget(&b);
+    w.setLayout(layout);
+    w.show();
     return a.exec();
 }
