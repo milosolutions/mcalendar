@@ -2,8 +2,7 @@
 #define SAMPLEDAY_H
 
 #include "mcalendar.h"
-
-
+#include <QToolButton>
 
 class SampleDay : public MDayView
 {
@@ -15,7 +14,7 @@ public:
 protected:
     virtual void onDateChanged() override;
 
-    QLabel* m_label;
+    QToolButton* m_button;
 };
 
 
