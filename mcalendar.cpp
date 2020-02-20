@@ -176,7 +176,7 @@ void MCalendar::setBackgroundColor(const QColor& color)
 {
     // https://wiki.qt.io/How_to_Change_the_Background_Color_of_QWidget
     QPalette pal = palette();
-    pal.setColor(QPalette::Background, color);
+    pal.setColor(QPalette::Window, color);
     setAutoFillBackground(true);
     setPalette(pal);
 }
