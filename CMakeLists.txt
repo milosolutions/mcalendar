@@ -11,7 +11,7 @@ add_compile_definitions(MCALENDAR_LIB)
 
 set(SOURCES mcalendar.h mcalendar.cpp sampleday.h sampleday.cpp)
 
-set(OTHER_FILES README.md mlog.doxyfile)
+set(OTHER_FILES README.md mcalendar.doxyfile)
 
 add_library(mcalendar OBJECT ${SOURCES} ${OTHER_FILES})
 
