@@ -22,6 +22,6 @@ SampleDay::SampleDay() : MDayView()
 
 void SampleDay::onDateChanged()
 {
-    qCDebug(coreMain) << "Date has changed!" << date();
+    //qCDebug(coreMain) << "Date has changed!" << date();
     m_button->setText(date().toString("d"));
 }
