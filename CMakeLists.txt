@@ -1,9 +1,14 @@
+if (POLICY CMP0048)
+        cmake_policy(SET CMP0048 NEW)
+endif ()
 
 project(mcalendar
   VERSION 0.0.1
   DESCRIPTION "Milo Log"
   LANGUAGES CXX
 )
+
+enable_testing()
 
 find_package(Qt5 COMPONENTS REQUIRED Core Gui Widgets)
 
@@ -27,5 +32,4 @@ target_link_libraries(mcalendar
   Qt5::Widgets
 )
 
-message("MCalendar: missing unit test!")
-#add_subdirectory(tst_mcalendar)
+add_subdirectory(test_mcalendar)
