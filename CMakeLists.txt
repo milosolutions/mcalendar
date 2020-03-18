@@ -8,13 +8,16 @@ project(mcalendar
   LANGUAGES CXX
 )
 
-enable_testing()
-
-find_package(Qt5 COMPONENTS REQUIRED Core Gui Widgets)
+find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 
 add_compile_definitions(MCALENDAR_LIB)
 
-set(SOURCES mcalendar.h mcalendar.cpp sampleday.h sampleday.cpp)
+set(SOURCES 
+    mcalendar.h
+    mcalendar.cpp
+    sampleday.h
+    sampleday.cpp
+)
 
 set(OTHER_FILES README.md mcalendar.doxyfile)
 
@@ -26,10 +29,8 @@ target_include_directories(mcalendar
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
 )
 
-target_link_libraries(mcalendar
-  Qt5::Core
-  Qt5::Gui
-  Qt5::Widgets
-)
+qt5_use_modules(mcalendar Core Gui Widgets)
 
+enable_testing()
 add_subdirectory(test_mcalendar)
+add_test(NAME MCalendarTest COMMAND mcalendar_test)

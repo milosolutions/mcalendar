@@ -15,6 +15,8 @@ private slots:
     void testMCalendarSetHeader();
     void testMCalendarSetDateRange();
     void testMCalendarSetMonth();
+    void testMDateRangeCalculations();
+    void testMTimeRangeCalculations();
 };
 
 MCalendarTest::MCalendarTest()
@@ -71,6 +73,33 @@ void MCalendarTest::testMCalendarSetMonth()
     for (int i=0; i<expectedDays.size(); ++i) {
         QCOMPARE(mCalendar.dayViews().at(i)->date(), expectedDays.at(i));
     }
+}
+
+void MCalendarTest::testMDateRangeCalculations() {
+    QDate from(1900, 1, 1);
+    QDate to(1900, 1, 10);
+    MDateRange mDateRange{from, to};
+    QVERIFY(mDateRange.isValid());
+    QCOMPARE(mDateRange.duration(), 9);
+    QCOMPARE(mDateRange.daysCount(), 10);
+
+    QDate otherFrom(1900, 1, 59);
+    QDate otherTo(1900, 1, 63);
+    MDateRange otherMDateRange{otherFrom, otherTo};
+
+    QVERIFY(!mDateRange.equals(otherMDateRange));
+}
+
+void MCalendarTest::testMTimeRangeCalculations() {
+    QTime from(0, 0, 10);
+    QTime to(0, 0, 20);
+    MTimeRange mTimeRange{from, to};
+    QCOMPARE(mTimeRange.durationInSeconds(), 10);
+
+    QTime otherFrom(0, 0, 10);
+    QTime otherTo(0, 0, 50);
+    MTimeRange otherMTimeRange{otherFrom, otherTo};
+    QVERIFY(!(mTimeRange.equals(otherMTimeRange)));
 }
 
 QTEST_MAIN(MCalendarTest)
