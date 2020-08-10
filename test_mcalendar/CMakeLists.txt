@@ -1,22 +1,11 @@
-cmake_minimum_required(VERSION 3.5)
+find_package(Qt5 COMPONENTS Core Gui Widgets Test REQUIRED)
 
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt5 COMPONENTS Core Gui Widgets Test REQUIRED)
+add_executable(test_mcalendar tst_mcalendartest.cpp)
 
-set(TEST_SRC
-    ${CMAKE_CURRENT_SOURCE_DIR}/tst_mcalendartest.cpp
+target_link_libraries(test_mcalendar mcalendar
+  Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Test
 )
 
-set(APP_SRC
-    ${PROJECT_SOURCE_DIR}/mcalendar.h
-    ${PROJECT_SOURCE_DIR}/mcalendar.cpp
-    ${PROJECT_SOURCE_DIR}/daterange.h
-    ${PROJECT_SOURCE_DIR}/timerange.h
-)
-
-add_executable(mcalendar_test ${TEST_SRC} ${APP_SRC})
-
-target_include_directories(mcalendar_test PRIVATE ${PROJECT_SOURCE_DIR})
-
-qt5_use_modules(mcalendar_test Core Gui Widgets Test)
+add_test(test_mcalendar test_mcalendar)
